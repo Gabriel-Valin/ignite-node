@@ -21,9 +21,13 @@ app.post('/account', (request, response) => {
     return response.sendStatus(201)
 })
 
-app.get('/statement/:cpf', (request, response) => {
-    const { cpf } = request.params
+app.get('/statement', (request, response) => {
+    const { cpf } = request.headers
     const account = accounts.find(account => account.cpf === cpf)
+
+    if (!account) {
+        return response.status(400).json({ error: 'Non-Existent account, please register your account' })
+    }
 
     return response.json(account.statement)
 })
