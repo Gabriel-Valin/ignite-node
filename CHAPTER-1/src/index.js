@@ -90,4 +90,15 @@ app.post('/withdrawl', existsCPF, (request, response) => {
 
 })
 
+app.get('/statement/date', existsCPF,(request, response) => {
+    const { account } = request
+    const { date } = request.query
+
+    const dateFormat = new Date(date + ' 00:00')
+
+    const findAllStatements = account.statement.filter(statement => statement.created_at.toDateString() === new Date(dateFormat).toDateString())
+
+    return response.status(200).json(findAllStatements)
+})
+
 app.listen(3331, () => console.log('Server running at PORT: 3331 =)'))
