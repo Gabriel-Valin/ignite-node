@@ -101,4 +101,18 @@ app.get('/statement/date', existsCPF,(request, response) => {
     return response.status(200).json(findAllStatements)
 })
 
+app.put('/account', existsCPF, (request, response) => {
+    const { name } = request.body
+    const { account } = request
+
+    account.name = name
+
+    return response.status(201).send()
+})
+
+app.get('/account', existsCPF, (request, response) => {
+    const { account } = request
+    return response.json(account)
+})
+
 app.listen(3331, () => console.log('Server running at PORT: 3331 =)'))

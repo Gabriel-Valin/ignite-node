@@ -6,7 +6,7 @@
 - [✅] Should be able search a banking extract from client
 - [✅] Should be able make a deposit
 - [✅] Should be able make a withdrawal
-- [] Should be able search a banking extract from client by date
+- [✅] Should be able search a banking extract from client by date
 - [] Should be able update account infos from client
 - [] Should be able get info from account client
 - [] Should be able delete account client
