@@ -39,4 +39,21 @@ app.get('/statement', existsCPF,(request, response) => {
     return response.json(account.statement)
 })
 
+app.post('/deposit', existsCPF, (request, response) => {
+    const { amount, description } = request.body
+
+    const { account } = request
+
+    const operationBanking = {
+        description,
+        amount,
+        created_at: new Date(),
+        type: 'CREDIT'
+    }
+
+    account.statement.push(operationBanking)
+
+    return response.status(201).send()
+})
+
 app.listen(3331, () => console.log('Server running at PORT: 3331 =)'))
