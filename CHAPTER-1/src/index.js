@@ -17,6 +17,18 @@ const existsCPF = (request, response, next) => {
     next()
 }
 
+const getBalance = (balance) => {
+    const setBalance = balance.reduce((value, operation) => {
+        if (operation.type === 'CREDIT') {
+            return value + operation.amount
+        } else {
+            return value - operation.amount
+        }
+    }, 0)
+
+    return setBalance
+}
+
 app.use(express.json())
 
 app.post('/account', (request, response) => {
@@ -54,6 +66,28 @@ app.post('/deposit', existsCPF, (request, response) => {
     account.statement.push(operationBanking)
 
     return response.status(201).send()
+})
+
+app.post('/withdrawl', existsCPF, (request, response) => {
+    const { account } = request
+    const { amount } = request.body
+
+    const setBalance = getBalance(account.statement)
+
+    if (setBalance < amount) {
+        return response.status(400).json({ error: 'Insufficient funds for withdrwal!' })
+    }
+  
+    const operationBanking = {
+        amount,
+        created_at: new Date(),
+        type: 'DEBIT'
+    }
+
+    account.statement.push(operationBanking)
+
+    return response.status(201).send()
+
 })
 
 app.listen(3331, () => console.log('Server running at PORT: 3331 =)'))
