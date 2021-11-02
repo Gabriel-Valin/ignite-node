@@ -3,48 +3,60 @@
 </h2>
 
 <div align="center">
-    Nodemon, HTTP Methods, Insomnia & Types of Params<br>
+    Full CRUD Operations
 </div>
 
 
 ## :rocket: Content
 
-## Verbs
+## Features
 
-  - GET - Reading infos
-  - POST - Create infos
-  - PUT - Update Infos
-  - PATCH - Update PARTIAL info (example: avatar from user)
-  - DELETE - Delete infos
+  - Concept and theory of Middlewares
+  - Implements all http methods (CRUD operaions too)
+  - Using modern javascript (reduce, filter, find & some)
+  EXAMPLES:
 
+    ```
+    const getBalance = (balance) => {
+    const setBalance = balance.reduce((value, operation) => {
+        if (operation.type === 'CREDIT') {
+            return value + operation.amount
+        } else {
+            return value - operation.amount
+        }
+    }, 0)
+
+      return setBalance
+    }
+    ```
+    ```
+    const existsCPF = (request, response, next) => {
+        const { cpf } = request.headers
+        const account = accounts.find(account => account.cpf === cpf)
+
+        if (!account) {
+            return response.status(400).json({ error: 'Non-Existent account, please register your account' })
+        }
+
+        request.account = account
+
+        next()
+    }
+    ```
+    ```
+    app.get('/statement/date', existsCPF,(request, response) => {
+      const { account } = request
+      const { date } = request.query
+
+      const dateFormat = new Date(date + ' 00:00')
+
+      const findAllStatements = account.statement.filter(statement => statement.created_at.toDateString() === new Date(dateFormat).toDateString())
+
+      return response.status(200).json(findAllStatements)
+    })
+    ```
+    - Rewriting request of Express
+    - Requirements
+    - Core business
 <hr>
 
-## HTTP - Status Code 
-
-  - 1xx - Informative: processing..
-  - 2xx - Confirmation:
-    - 200: Request success
-    - 201: Created - AFTER REQUEST POST
-  - 3xx - Redirect:
-    - 301: Moved Permanently
-    - 302: Moved
-  - 4xx - Client Error
-    - 400: Bad Request
-    - 401: Unauthorized
-    - 403: Forbidden
-    - 404: Not Found
-    - 422: Unprocessable Entity 
-  - 5xx - Server Error
-    - 500: Internal Server Error
-    - 502: Bad Gateway
-
-<hr>
-
-## Request Params
-
-  - Header Params: Token, authorization, cors
-  - Query Params: key,value,separator (page=28&order=asc)
-  - Route Params: /products/{id}
-  - Body Params: { name: 'john doe', last_name: 'stewie' }
-
-<hr>

@@ -115,4 +115,20 @@ app.get('/account', existsCPF, (request, response) => {
     return response.json(account)
 })
 
+app.delete('/account', existsCPF, (request, response) => {
+    const { account } = request
+
+    accounts.splice(account, 1)
+
+    return response.status(200).json(accounts)
+})
+
+app.get('/balance', existsCPF, (request, response) => {
+    const { account } = request
+
+    const setBalance = getBalance(account.statement)
+
+    return response.json(setBalance)
+})
+
 app.listen(3331, () => console.log('Server running at PORT: 3331 =)'))
